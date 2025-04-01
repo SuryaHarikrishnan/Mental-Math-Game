@@ -1,0 +1,49 @@
+import random
+import time
+
+def generate_question(difficulty):
+    operations = ['+', '-', '*']
+    op = random.choice(operations)
+    
+    if difficulty == 'easy':
+        a, b = random.randint(1, 10), random.randint(1, 10)
+    elif difficulty == 'medium':
+        a, b = random.randint(10, 50), random.randint(10, 50)
+    else:  # hard
+        a, b = random.randint(50, 100), random.randint(50, 100)
+
+    question = f"{a} {op} {b}"
+    answer = eval(question)
+    return question, answer
+
+def run_game():
+    print("Welcome to the Mental Math Trainer!")
+    difficulty = input("Choose difficulty (easy/medium/hard): ").lower()
+    num_questions = int(input("How many questions do you want to solve? "))
+
+    correct = 0
+    start_time = time.time()
+
+    for i in range(num_questions):
+        question, answer = generate_question(difficulty)
+        print(f"Question {i+1}: {question} = ?")
+        try:
+            user_answer = int(input("Your answer: "))
+            if user_answer == answer:
+                print("✅ Correct!\n")
+                correct += 1
+            else:
+                print(f"❌ Wrong! The correct answer was {answer}.\n")
+        except ValueError:
+            print(f"❌ Invalid input. The correct answer was {answer}.\n")
+
+    end_time = time.time()
+    total_time = round(end_time - start_time, 2)
+
+    print("Game Over!")
+    print(f"You got {correct}/{num_questions} correct.")
+    print(f"Total time: {total_time} seconds.")
+    print(f"Average time per question: {round(total_time/num_questions, 2)} seconds.")
+
+if __name__ == "__main__":
+    run_game()
